@@ -24,17 +24,59 @@ body {
 
 .container { max-width: 1400px; margin: 0 auto; padding: 25px; }
 
+/* 🕋 HEADER PREMIUM DOUBLE ALIGNEMENT */
 header {
-    display: flex; justify-content: space-between; align-items: center;
-    background: rgba(22, 30, 49, 0.8); backdrop-filter: blur(10px);
-    padding: 18px 25px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 25px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    background: rgba(22, 30, 49, 0.8); 
+    backdrop-filter: blur(10px);
+    padding: 20px 30px; 
+    border-radius: 16px; 
+    border: 1px solid var(--border-color); 
+    margin-bottom: 25px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.header-right-block {
+    display: flex;
+    align-items: center;
+    gap: 20px !important;
+}
+
+.xp-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .logo { font-size: 22px; font-weight: 800; background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
 .mission-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-weight: 500; }
 .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 25px; }
 @media (max-width: 1150px) { .grid { grid-template-columns: 1fr; } }
+
+/* 🃏 CARTES DE MODULES & SÉCURITÉ ANTI-COLLISION */
+.module-card { 
+    background: var(--bg-card); 
+    border: 1px solid var(--border-color); 
+    border-radius: 16px; 
+    padding: 25px; 
+    position: relative; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+    transition: all 0.3s ease; 
+}
+.module-card:hover:not(.locked) { border-color: var(--accent-primary); transform: translateY(-2px); }
+.module-card.locked { opacity: 0.4; cursor: not-allowed; }
+
+.module-card h3 { 
+    margin-top: 0; 
+    font-size: 18px; 
+    color: var(--text-main); 
+    margin-bottom: 12px; 
+    padding-right: 120px; /* 🛡️ Zone de sécurité anti-collision pour le badge */
+    line-height: 1.4;
+}
+.module-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; padding-right: 20px; }
 
 .card {
     background: var(--bg-card); border: 1px solid var(--border-color);
@@ -68,8 +110,18 @@ select:focus, input[type="number"]:focus { outline: none; border-color: var(--ac
 .error-box { background: rgba(244,63,94,0.1); border: 1px solid rgba(244,63,94,0.3); color: #fda4af; padding: 14px; border-radius: 10px; margin-bottom: 20px; font-size: 13px; display: none; }
 
 .financial-line { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 8px 12px; background: rgba(15,20,34,0.4); border-radius: 6px; margin-bottom: 6px; border-left: 3px solid transparent; }
-.title-actif { color: var(--accent-green); border-bottom: 2px solid rgba(16,185,129,0.2); padding-bottom: 6px; margin-bottom: 15px; }
-.title-passif { color: var(--accent-blue); border-bottom: 2px solid rgba(59,130,246,0.2); padding-bottom: 6px; margin-bottom: 15px; }
+
+/* 📊 SOUS-TITRES RESPIRANTS COMPTABLES */
+.title-actif, .title-passif {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding-bottom: 8px; 
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+.title-actif { color: var(--accent-green); border-bottom: 2px solid rgba(16,185,129,0.2); }
+.title-passif { color: var(--accent-blue); border-bottom: 2px solid rgba(59,130,246,0.2); }
 
 #actif-list .financial-line { border-left-color: var(--accent-green); }
 #passif-list .financial-line { border-left-color: var(--accent-blue); }
@@ -81,9 +133,13 @@ th, td { padding: 12px; border-bottom: 1px solid var(--border-color); font-size:
 th { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
 td strong { color: var(--accent-primary); }
 
-.xp-text { font-size: 11px; font-weight: 700; color: var(--accent-primary); text-align: right; margin-bottom: 4px; text-transform: uppercase; }
-.xp-bar-container { width: 130px; height: 6px; background: #0f1422; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); }
+/* 🔋 LABELS ET PROGRESSION SCORE DYNAMIQUES */
+.xp-text { font-size: 11px; font-weight: 700; color: var(--accent-primary); text-align: left; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.xp-bar-container { width: 140px; height: 8px; background: #0f1422; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); }
 .xp-bar { width: 0%; height: 100%; background: var(--gradient-main); border-radius: 10px; transition: width 0.4s ease; }
+
+.lock-badge { position: absolute; top: 20px; right: 20px; background: #334155; color: #94a3b8; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid var(--border-color); }
+.unlocked-badge { position: absolute; top: 20px; right: 20px; background: rgba(16, 185, 129, 0.15); color: var(--accent-green); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.3); }
 
 .success-card { background: linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(5,150,105,0.05) 100%); border: 1px solid rgba(16,185,129,0.4); color: #a7f3d0; animation: slideUp 0.4s ease; }
 @keyframes slideUp { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
