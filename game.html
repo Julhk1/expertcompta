@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpertCompta - Studio d'Apprentissage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <div class="logo" onclick="window.location.href='index.html'">🎓 ExpertCompta</div>
+            <div id="module-title" class="mission-subtitle">Initialisation du cours...</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button onclick="window.location.href='index.html'" class="btn-secondary">🏠 Catalogue</button>
+            <button onclick="skipStepTesting()" class="btn-secondary" style="background:#ffedd5; color:#c2410c;">⏩ Forcer l'écriture (Test)</button>
+            <div>
+                <div class="xp-text">Expérience : <span id="xp-display">100</span> XP</div>
+                <div class="xp-bar-container"><div class="xp-bar" id="xp-bar"></div></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="grid">
+        <div class="panel-left">
+            <div class="card" style="border-left: 5px solid var(--accent-green);">
+                <h2 id="step-title">💡 Concepts Théoriques</h2>
+                <div id="step-theory" style="font-size: 14px; line-height: 1.6; color: #334155; margin-bottom: 15px;"></div>
+            </div>
+
+            <div class="card" style="background: #fafafa;">
+                <h3 id="exercise-instruction">🎯 Travail à faire</h3>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Compte comptable (PCG sélectionné)</label>
+                    <select id="account-select"></select>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <label>Débit (€)</label>
+                        <input type="number" id="input-debit" value="0">
+                    </div>
+                    <div>
+                        <label>Crédit (€)</label>
+                        <input type="number" id="input-credit" value="0">
+                    </div>
+                </div>
+                <button onclick="handleSaisie()" class="btn-main" style="margin-top: 15px;">Enregistrer la ligne au journal</button>
+            </div>
+
+            <div class="error-box" id="error-message"></div>
+
+            <div class="card">
+                <h3>Livre-Journal de l'exercice en cours</h3>
+                <table>
+                    <thead>
+                        <tr><th>Compte</th><th>Débit</th><th>Crédit</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="journal-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel-right">
+            <div class="card">
+                <h2 style="color: var(--accent-green); margin-top:0;">⚖️ LE BILAN COMPTABLE (Situation)</h2>
+                <div class="grid-2">
+                    <div>
+                        <h4 class="title-actif">ACTIF (Emplois)</h4>
+                        <div id="actif-list"></div>
+                        <div class="financial-line" style="margin-top:15px; font-weight:bold;"><span>Total Actif :</span><span><span id="total-actif">0</span> €</span></div>
+                    </div>
+                    <div>
+                        <h4 class="title-passif">PASSIF (Ressources)</h4>
+                        <div id="passif-list"></div>
+                        <div class="financial-line" style="margin-top:15px; font-weight:bold;"><span>Total Passif :</span><span><span id="total-passif">0</span> €</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="background: #f1f5f9;">
+                <h2 style="color: #0284c7; margin-top:0;">📊 COMPTE DE RÉSULTAT (Activité)</h2>
+                <div class="grid-2">
+                    <div>
+                        <h4 style="color: var(--accent-red);">CHARGES (Classe 6)</h4>
+                        <div id="charges-list"></div>
+                        <div class="financial-line" style="margin-top:15px; font-weight:bold;"><span>Total Charges :</span><span><span id="total-charges">0</span> €</span></div>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--accent-green);">PRODUITS (Classe 7)</h4>
+                        <div id="produits-list"></div>
+                        <div class="financial-line" style="margin-top:15px; font-weight:bold;"><span>Total Produits :</span><span><span id="total-produits">0</span> €</span></div>
+                    </div>
+                </div>
+                <hr style="border:0; border-top:1px solid #cbd5e1; margin:15px 0;">
+                <div class="financial-line" style="font-size:15px; font-weight:bold;">
+                    <span>📈 Résultat Net :</span><span><span id="resultat-net">0</span> €</span>
+                </div>
+            </div>
+
+            <div class="card success-card" id="success-panel" style="display:none;">
+                <h3>🎉 Analyse et correction de l'expert :</h3>
+                <p id="success-explanation" style="font-size:13px; line-height:1.5; margin:10px 0; color:#166534;"></p>
+                <button onclick="nextStep()" class="btn-main" style="background:#166534;">Étape Suivante ➡️</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/scenarios.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
