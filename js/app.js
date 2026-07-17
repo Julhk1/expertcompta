@@ -77,12 +77,15 @@ function renderUI() {
         return;
     }
 
-    document.getElementById('module-title').innerText = `Filière : ${currentModule.toUpperCase()} | Progression : Étape ${gameState.step}/15`;
+    // CALCUL DYNAMIQUE DU NOMBRE TOTAL D'ÉTAPES DU MODULE
+    const totalStepsInModule = Object.keys(pool).length;
+    document.getElementById('module-title').innerText = `Filière : ${currentModule.toUpperCase()} | Progression : Étape ${gameState.step}/${totalStepsInModule}`;
+    
     document.getElementById('step-title').innerText = stepData.title;
     document.getElementById('step-theory').innerHTML = stepData.theory;
     document.getElementById('exercise-instruction').innerText = `${stepData.exercise.instruction}`;
     document.getElementById('xp-display').innerText = gameState.xp;
-    document.getElementById('xp-bar').style.width = (gameState.step * 6.6) + "%";
+    document.getElementById('xp-bar').style.width = (gameState.step * (100 / totalStepsInModule)) + "%";
 
     const select = document.getElementById('account-select');
     select.innerHTML = '';
@@ -198,7 +201,7 @@ function renderFinancials() {
     const stepData = pool ? pool[gameState.step] : null;
     if (!stepData) return;
 
-    // ALGORITHME DE VÉRIFICATION ANTI-FRAUDE PROFESSIONNEL
+    // ALGORITHME DE VÉRIFICATION ANTI-FRAUDE PROFESSIONNEL SÉCURISÉ
     const linesRequired = Object.keys(stepData.exercise.expectedEntries).length;
     let valid = true;
     for (let acc in stepData.exercise.expectedEntries) {
