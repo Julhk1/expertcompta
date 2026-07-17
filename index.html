@@ -9,44 +9,45 @@
         body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         .hub-container { max-width: 900px; width: 100%; }
         .welcome-header { text-align: center; margin-bottom: 40px; }
-        .welcome-header h1 { color: var(--accent-green); font-size: 36px; margin-bottom: 10px; }
+        .welcome-header h1 { color: var(--accent-primary); font-size: 38px; font-weight: 800; margin-bottom: 10px; background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .modules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         @media(max-width: 768px) { .modules-grid { grid-template-columns: 1fr; } }
-        .module-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; position: relative; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
-        .module-card.locked { opacity: 0.6; background: #f1f5f9; cursor: not-allowed; }
-        .module-card h3 { margin-top: 0; font-size: 18px; display: flex; align-items: center; gap: 8px; }
-        .module-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
-        .lock-badge { position: absolute; top: 20px; right: 20px; background: #cbd5e1; color: #475569; padding: 4px 8px; border-radius: 20px; font-size: 11px; font-weight: bold; }
-        .unlocked-badge { position: absolute; top: 20px; right: 20px; background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .module-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.15); transition: all 0.3s ease; }
+        .module-card:hover:not(.locked) { border-color: var(--accent-primary); transform: translateY(-2px); }
+        .module-card.locked { opacity: 0.4; cursor: not-allowed; }
+        .module-card h3 { margin-top: 0; font-size: 18px; color: var(--text-main); margin-bottom: 10px; }
+        .module-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+        .lock-badge { position: absolute; top: 20px; right: 20px; background: #334155; color: #94a3b8; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid var(--border-color); }
+        .unlocked-badge { position: absolute; top: 20px; right: 20px; background: rgba(16, 185, 129, 0.15); color: var(--accent-green); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.3); }
     </style>
 </head>
 <body>
-    <div class="hub-container">
+    <div class="hub-container" style="animation: slideUp 0.5s ease;">
         <div class="welcome-header">
             <h1>🎓 ExpertCompta</h1>
-            <p class="text-muted">La plateforme d'apprentissage interactive, du débutant absolu au niveau Expert-Comptable.</p>
+            <p style="color: var(--text-muted); font-size: 15px;">La plateforme d'apprentissage d'élite, du débutant absolu au niveau Expert-Comptable.</p>
         </div>
 
-        <h2 style="margin-bottom: 20px;">📚 Cursus Universitaire (Progression)</h2>
+        <h2 style="margin-bottom: 20px; font-size: 20px; color: var(--text-main); border-left: 4px solid var(--accent-primary); padding-left: 10px;">Considérer l'année scolaire (Progression)</h2>
         <div class="modules-grid" id="modules-list"></div>
 
-        <h2 style="margin-bottom: 20px; margin-top: 40px;">🏆 Cas Pratiques Supérieurs (Simulations)</h2>
+        <h2 style="margin-bottom: 20px; margin-top: 40px; font-size: 20px; color: var(--text-main); border-left: 4px solid var(--accent-blue); padding-left: 10px;">🏆 Cas Pratiques et Simulations</h2>
         <div class="modules-grid" id="cases-list"></div>
     </div>
 
     <script>
         const configModules = [
-            { id: "mod1", name: "Module 1 : L1 - Les Bases et Fondations", desc: "Comprendre la partie double, l'Actif, le Passif, les Débits et les Crédits sans jargon.", level: 1 },
-            { id: "mod2", name: "Module 2 : L2 - Comptabilité Générale", desc: "Maîtriser la TVA, les factures d'achats/ventes, les immobilisations et les amortissements.", level: 2 },
-            { id: "mod3", name: "Module 3 : L3/M1 - Compta Approfondie", desc: "Introduction aux structures complexes : Consolidation de groupes et risques de change.", level: 3 },
-            { id: "mod4", name: "Module 4 : M2 - Fiscalité des Sociétés", desc: "Calcul et liquidation de l'Impôt sur les Sociétés (IS) en fin d'exercice comptable.", level: 4 },
-            { id: "mod5", name: "Module 5 : M2 - Gestion Sociale & Paie", desc: "Saisie de la masse salariale brute, du net à payer et des cotisations patronales URSSAF.", level: 5 }
+            { id: "mod1", name: "Module 1 : L1 - Fondations Comptables", desc: "Maîtriser la partie double, l'Actif, le Passif, les flux de charges, produits, créances et dettes.", level: 1 },
+            { id: "mod2", name: "Module 2 : L2 - Comptabilité Générale", desc: "La fiscalité courante, gestion fine de la TVA, réductions, escomptes, amortissements et stocks.", level: 2 },
+            { id: "mod3", name: "Module 3 : L3/M1 - Compta Approfondie", desc: "Technicités de cabinet : risques de change sur devises, créances douteuses et consolidation de groupe.", level: 3 },
+            { id: "mod4", name: "Module 4 : M2 - Fiscalité des Sociétés", desc: "Stratégie fiscale : acomptes et liquidation d'IS, optimisation avec le Crédit Impôt Recherche (CIR).", level: 4 },
+            { id: "mod5", name: "Module 5 : M2 - Gestion Sociale & Paie", desc: "Le bulletin de salaire de A à Z : brut, net, retenues salariales, cotisations URSSAF et DSN.", level: 5 }
         ];
 
         const configCases = [
-            { id: "boulangerie", name: "🥖 Cas de Synthèse : L'Artisan Boulanger", desc: "Gérez un commerce de A à Z : stock de farine, achat du fournil et paie de l'apprenti." },
-            { id: "saas", name: "💻 Cas de Synthèse : L'Éditeur SaaS", desc: "Traitez les problématiques tech : R&D, abonnements constatés d'avance (cut-off) et devises." },
-            { id: "industrie", name: "🏭 Cas de Synthèse : Le Groupe Industriel", desc: "Pilotez des flux industriels lourds : double stock, robots et écritures de consolidation." }
+            { id: "boulangerie", name: "🥖 L'Artisan Boulanger", desc: "Simulez un exercice complet de commerce de proximité : investissements, stocks de farine et paie." },
+            { id: "saas", name: "💻 L'Éditeur de Logiciels SaaS", desc: "Gérez les problématiques Tech complexes : activation de R&D, devises étrangères et cut-off (PCA)." },
+            { id: "industrie", name: "🏭 Le Groupe Industriel", desc: "Pilotez des flux industriels lourds : robotisation des lignes, double stock et écritures de groupe." }
         ];
 
         function renderHub() {
@@ -58,11 +59,11 @@
                 const isLocked = mod.level > userProgress;
                 modContainer.innerHTML += `
                     <div class="module-card ${isLocked ? 'locked' : ''}">
-                        <span class="${isLocked ? 'lock-badge' : 'unlocked-badge'}">${isLocked ? '🔒 Verrouillé' : '🔓 Disponible'}</span>
+                        <span class="${isLocked ? 'lock-badge' : 'unlocked-badge'}">${isLocked ? '🔒 Bloqué' : '🔓 Disponible'}</span>
                         <h3>${mod.name}</h3>
                         <p>${mod.desc}</p>
-                        <button ${isLocked ? 'disabled' : ''} onclick="launch('${mod.id}')" class="btn-main" style="${isLocked ? 'background:#cbd5e1;cursor:not-allowed;' : ''}">
-                            ${isLocked ? 'Bloqué' : 'Ouvrir le cours'}
+                        <button ${isLocked ? 'disabled' : ''} onclick="launch('${mod.id}')" class="btn-main" style="${isLocked ? 'background:#1e293b;color:#64748b;box-shadow:none;cursor:not-allowed;' : ''}">
+                            ${isLocked ? 'Niveau requis' : 'Ouvrir l\'amphi'}
                         </button>
                     </div>`;
             });
@@ -72,11 +73,12 @@
             configCases.forEach(c => {
                 const isLocked = userProgress < 2; 
                 casesContainer.innerHTML += `
-                    <div class="module-card ${isLocked ? 'locked' : ''}" style="border-color: var(--accent-green);">
+                    <div class="module-card ${isLocked ? 'locked' : ''}">
+                        <span class="${isLocked ? 'lock-badge' : 'unlocked-badge'}" style="${isLocked ? '' : 'color:var(--accent-blue);background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.3);'}">${isLocked ? '🔒 Bloqué' : '⚡ Simulateur'}</span>
                         <h3>${c.name}</h3>
                         <p>${c.desc}</p>
-                        <button ${isLocked ? 'disabled' : ''} onclick="launch('${c.id}')" class="btn-main" style="${isLocked ? 'background:#cbd5e1;cursor:not-allowed;' : 'background:#0284c7;'}">
-                            Lancer la simulation
+                        <button ${isLocked ? 'disabled' : ''} onclick="launch('${c.id}')" class="btn-main" style="${isLocked ? 'background:#1e293b;color:#64748b;box-shadow:none;cursor:not-allowed;' : 'background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);box-shadow:0 4px 15px rgba(59,130,246,0.3);'}">
+                            Lancer l'immersion
                         </button>
                     </div>`;
             });
