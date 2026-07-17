@@ -71,13 +71,12 @@ function renderUI() {
         }
         document.getElementById('module-title').innerText = "Félicitations !";
         document.getElementById('step-title').innerText = "🏆 Niveau Validé !";
-        document.getElementById('step-theory').innerHTML = `<p>Tu as maîtrisé l'intégralité des concepts théoriques et pratiques de ce niveau de l'académie.</p><br><button onclick="exitToMenu()" class="btn-main">Retourner au menu principal</button>`;
+        document.getElementById('step-theory').innerHTML = `<p>Tu as validé avec succès l'ensemble du programme pratique de cette section.</p><br><button onclick="exitToMenu()" class="btn-main">Retourner au catalogue</button>`;
         document.getElementById('xp-bar').style.width = "100%";
         renderFinancials();
         return;
     }
 
-    // CALCUL DYNAMIQUE DU NOMBRE TOTAL D'ÉTAPES DU MODULE
     const totalStepsInModule = Object.keys(pool).length;
     document.getElementById('module-title').innerText = `Filière : ${currentModule.toUpperCase()} | Progression : Étape ${gameState.step}/${totalStepsInModule}`;
     
@@ -201,7 +200,6 @@ function renderFinancials() {
     const stepData = pool ? pool[gameState.step] : null;
     if (!stepData) return;
 
-    // ALGORITHME DE VÉRIFICATION ANTI-FRAUDE PROFESSIONNEL SÉCURISÉ
     const linesRequired = Object.keys(stepData.exercise.expectedEntries).length;
     let valid = true;
     for (let acc in stepData.exercise.expectedEntries) {
@@ -222,6 +220,88 @@ function renderFinancials() {
     } else {
         document.getElementById('success-panel').style.display = 'none';
     }
+}
+
+function genererLiasseFiscalePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    doc.setFillColor(22, 30, 49); 
+    doc.rect(0, 0, 210, 40, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("EXPERTCOMPTA - LIASSE FISCALE", 15, 20);
+    
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("Formulaire de synthèse pédagogique - Conforme aux normes du PCG", 15, 32);
+    
+    const totalActif = document.getElementById('total-actif').innerText + " €";
+    const totalPassif = document.getElementById('total-passif').innerText + " €";
+    const totalCharges = document.getElementById('total-charges').innerText + " €";
+    const totalProduits = document.getElementById('total-produits').innerText + " €";
+    const resultatNet = document.getElementById('resultat-net').innerText + " €";
+    const moduleName = currentModule.toUpperCase();
+
+    doc.setTextColor(15, 23, 42);
+    doc.setFontSize(12);
+    doc.setFont("Helvetica", "bold");
+    doc.text(`CURSUS : ${moduleName} - ÉTAPE ${gameState.step}`, 15, 55);
+    doc.setFont("Helvetica", "normal");
+    doc.text(`Date d'exportation : ${new Date().toLocaleDateString()}`, 130, 55);
+    
+    doc.setFillColor(241, 245, 249);
+    doc.rect(15, 65, 180, 8, 'F');
+    doc.setFont("Helvetica", "bold");
+    doc.text("⚖️ BILAN COMPTABLE SIMPLIFIÉ (Patrimoine)", 18, 71);
+    
+    doc.setFont("Helvetica", "normal");
+    doc.rect(15, 73, 180, 30);
+    doc.line(105, 73, 105, 103); 
+    
+    doc.text("TOTAL ACTIF (Emplois) :", 18, 85);
+    doc.setFont("Helvetica", "bold");
+    doc.text(totalActif, 70, 85);
+    
+    doc.setFont("Helvetica", "normal");
+    doc.text("TOTAL PASSIF (Ressources) :", 108, 85);
+    doc.setFont("Helvetica", "bold");
+    doc.text(totalPassif, 165, 85);
+    
+    doc.setFillColor(241, 245, 249);
+    doc.rect(15, 115, 180, 8, 'F');
+    doc.setFont("Helvetica", "bold");
+    doc.text("📊 COMPTE DE RÉSULTAT (Activité de la période)", 18, 121);
+    
+    doc.setFont("Helvetica", "normal");
+    doc.rect(15, 123, 180, 45);
+    doc.line(15, 138, 195, 138);
+    doc.line(15, 153, 195, 153);
+    
+    doc.text("Total des Charges (Classe 6) :", 18, 132);
+    doc.text(totalCharges, 150, 132);
+    
+    doc.text("Total des Produits (Classe 7) :", 18, 147);
+    doc.text(totalProduits, 150, 147);
+    
+    doc.setFont("Helvetica", "bold");
+    doc.setTextColor(16, 185, 129); 
+    doc.text("RÉSULTAT NET DE L'EXERCICE :", 18, 162);
+    doc.text(resultatNet, 150, 162);
+    
+    doc.rect(120, 185, 75, 30);
+    doc.setTextColor(100, 116, 139);
+    doc.setFontSize(9);
+    doc.text("Visa de conformité", 123, 191);
+    doc.setFont("Helvetica", "bold");
+    doc.text("EXPERTCOMPTA ACCREDITED", 123, 205);
+    
+    doc.setFontSize(8);
+    doc.text("Ce document synthétique certifie la réussite et l'équilibre de la balance comptable de l'étudiant.", 15, 285);
+
+    doc.save(`Liasse_Fiscale_${moduleName}_Etape_${gameState.step}.pdf`);
 }
 
 function removeLine(index) {
