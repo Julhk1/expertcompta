@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExpertCompta - Simulateur d'Écriture</title>
+    <title>ExpertCompta — Simulateur d'Écriture</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,12 +11,12 @@
 <div class="container">
     <header>
         <div>
-            <div class="logo" onclick="window.location.href='index.html'">🎓 ExpertCompta</div>
+            <div class="logo" onclick="window.location.href='index.html'">ExpertCompta</div>
             <div id="module-title" class="mission-subtitle">Initialisation du cours...</div>
         </div>
         <div class="header-right-block">
-            <button onclick="window.location.href='index.html'" class="btn-secondary">🏠 Menu</button>
-            <button onclick="skipStepTesting()" class="btn-secondary" style="background:rgba(245,158,11,0.1); color:#f59e0b; border-color:rgba(245,158,11,0.3);">⏩ Auto-passer (Test)</button>
+            <button onclick="window.location.href='index.html'" class="btn-secondary">← Menu</button>
+            <button onclick="skipStepTesting()" class="btn-secondary" style="background:rgba(201,162,39,0.08); color:var(--gold-bright); border-color:rgba(201,162,39,0.3);" title="Outil de test : remplit l'écriture attendue automatiquement">⏩ Test</button>
             <div class="xp-container">
                 <div class="xp-text">Score : <span id="xp-display">100</span> XP</div>
                 <div class="xp-bar-container"><div class="xp-bar" id="xp-bar"></div></div>
@@ -26,24 +26,24 @@
 
     <div class="grid">
         <div class="panel-left">
-            <div class="card" style="border-left: 4px solid var(--accent-primary);">
-                <h2 id="step-title" style="color:var(--accent-primary); font-size:18px; margin-bottom:12px;">💡 Concepts Théoriques</h2>
-                <div id="step-theory" style="font-size: 14px; line-height: 1.6; color: #cbd5e1;"></div>
+            <div class="card" style="border-left: 4px solid var(--gold);">
+                <h2 id="step-title" style="font-family:var(--font-display); color:var(--gold-bright); font-size:19px; font-weight:600; margin-bottom:12px;">Concepts Théoriques</h2>
+                <div id="step-theory" style="font-size: 14.5px; line-height: 1.7; color: #cdd8d0;"></div>
             </div>
 
-            <div class="card" style="background: #111827;">
-                <h3 id="exercise-instruction" style="font-size:15px; color:var(--text-main); margin-bottom:15px;">🎯 Mission à passer au journal</h3>
+            <div class="card" style="background: var(--bg-inset);">
+                <h3 id="exercise-instruction" style="font-size:15px; color:var(--text-main); margin-bottom:16px; line-height:1.55;">🎯 Mission à passer au journal</h3>
                 <div class="form-group">
                     <label>Compte du PCG autorisé</label>
                     <select id="account-select"></select>
                 </div>
                 <div class="grid-2">
                     <div>
-                        <label>Débit (€)</label>
+                        <label style="color:var(--debit-red-bright);">Débit (€)</label>
                         <input type="number" id="input-debit" value="0">
                     </div>
                     <div>
-                        <label>Crédit (€)</label>
+                        <label style="color:var(--emerald-bright);">Crédit (€)</label>
                         <input type="number" id="input-credit" value="0">
                     </div>
                 </div>
@@ -52,11 +52,11 @@
 
             <div class="error-box" id="error-message"></div>
 
-            <div class="card" style="padding:20px;">
-                <h3 style="font-size:15px; margin-bottom:15px; color:var(--text-muted);">📖 Journal de l'exercice</h3>
+            <div class="card" style="padding:22px;">
+                <h3 style="font-size:14px; margin-bottom:16px; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.5px;">📖 Journal de l'exercice</h3>
                 <table>
                     <thead>
-                        <tr><th>Compte</th><th>Débit</th><th>Crédit</th><th>Action</th></tr>
+                        <tr><th>Compte</th><th>Débit</th><th>Crédit</th><th></th></tr>
                     </thead>
                     <tbody id="journal-body"></tbody>
                 </table>
@@ -65,50 +65,50 @@
 
         <div class="panel-right">
             <div class="card">
-                <h2 style="color: var(--accent-green); margin-bottom:20px; font-size:16px; text-transform:uppercase; letter-spacing:0.5px;">⚖️ LE BILAN COMPTABLE (Situation)</h2>
+                <h2 style="font-family:var(--font-display); color: var(--emerald-bright); margin-bottom:20px; font-size:17px; font-weight:600;">⚖️ LE BILAN COMPTABLE <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-faint); font-weight:400; text-transform:uppercase;">— Situation Patrimoniale</span></h2>
                 <div class="grid-2">
                     <div>
-                        <h4 class="title-actif">ACTIF (Possessions)</h4>
+                        <h4 class="title-actif">Actif (Possessions)</h4>
                         <div id="actif-list"></div>
-                        <div class="financial-line" style="margin-top:15px; font-weight:bold; border-left:none; background:rgba(16,185,129,0.15);"><span>Total Actif :</span><span><span id="total-actif">0</span> €</span></div>
+                        <div class="financial-line" style="margin-top:15px; font-weight:bold; border-left:none; background:rgba(47,168,118,0.15);"><span>Total Actif :</span><span><span id="total-actif">0</span> €</span></div>
                     </div>
                     <div>
-                        <h4 class="title-passif">PASSIF (Origines)</h4>
+                        <h4 class="title-passif">Passif (Origines)</h4>
                         <div id="passif-list"></div>
-                        <div class="financial-line" style="margin-top:15px; font-weight:bold; border-left:none; background:rgba(59,130,246,0.15);"><span>Total Passif :</span><span><span id="total-passif">0</span> €</span></div>
+                        <div class="financial-line" style="margin-top:15px; font-weight:bold; border-left:none; background:rgba(77,143,209,0.15);"><span>Total Passif :</span><span><span id="total-passif">0</span> €</span></div>
                     </div>
                 </div>
             </div>
 
-            <div class="card" style="background: #0f172a;">
-                <h2 style="color: var(--accent-primary); margin-bottom:20px; font-size:16px; text-transform:uppercase; letter-spacing:0.5px;">📊 COMPTE DE RÉSULTAT (Performance)</h2>
+            <div class="card" style="background: var(--bg-inset);">
+                <h2 style="font-family:var(--font-display); color: var(--gold-bright); margin-bottom:20px; font-size:17px; font-weight:600;">📊 COMPTE DE RÉSULTAT <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-faint); font-weight:400; text-transform:uppercase;">— Performance</span></h2>
                 <div class="grid-2">
                     <div>
-                        <h4 style="color: var(--accent-red); padding-bottom:6px; border-bottom:2px solid rgba(244,63,94,0.2); margin-bottom:15px;">CHARGES (Classe 6)</h4>
+                        <h4 style="font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:0.6px; color: var(--debit-red-bright); padding-bottom:6px; border-bottom:2px solid rgba(193,80,61,0.2); margin-bottom:15px;">Charges (Classe 6)</h4>
                         <div id="charges-list"></div>
-                        <div class="financial-line" style="margin-top:15px; font-weight:bold; border-left:none; background:rgba(244,63,94,0.15);"><span>Total Charges :</span><span><span id="total-charges">0</span> €</span></div>
+                        <div class="financial-line" style="margin-top:15px; font-weight:bold; border-left:none; background:rgba(193,80,61,0.15);"><span>Total Charges :</span><span><span id="total-charges">0</span> €</span></div>
                     </div>
                     <div>
-                        <h4 style="color: var(--accent-primary); padding-bottom:6px; border-bottom:2px solid rgba(0,242,254,0.2); margin-bottom:15px;">PRODUITS (Classe 7)</h4>
+                        <h4 style="font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:0.6px; color: var(--gold-bright); padding-bottom:6px; border-bottom:2px solid rgba(201,162,39,0.2); margin-bottom:15px;">Produits (Classe 7)</h4>
                         <div id="produits-list"></div>
-                        <div class="financial-line" style="margin-top:15px; font-weight:bold; border-left:none; background:rgba(0,242,254,0.15);"><span>Total Produits :</span><span><span id="total-produits">0</span> €</span></div>
+                        <div class="financial-line" style="margin-top:15px; font-weight:bold; border-left:none; background:rgba(201,162,39,0.15);"><span>Total Produits :</span><span><span id="total-produits">0</span> €</span></div>
                     </div>
                 </div>
                 <hr style="border:0; border-top:1px solid var(--border-color); margin:20px 0;">
-                <div class="financial-line" style="font-size:15px; font-weight:bold; background:#1e293b; padding:12px;">
+                <div class="financial-line" style="font-size:15px; font-weight:bold; background:var(--bg-card-raised); padding:13px;">
                     <span>📈 Résultat Net de l'exercice :</span><span><span id="resultat-net">0</span> €</span>
                 </div>
             </div>
 
             <div class="card success-card" id="success-panel" style="display:none;">
-                <h3>🎉 Écriture Validée par l'Expert !</h3>
-                <p id="success-explanation" style="font-size:14px; line-height:1.6; margin:15px 0; color:#a7f3d0;"></p>
-                
-                <button onclick="genererLiasseFiscalePDF()" class="btn-secondary" style="background:#0284c7; color:white; width:100%; margin-bottom:12px; border:none; padding:14px; font-weight:700; border-radius:10px; box-shadow:0 4px 10px rgba(2,132,199,0.3); cursor:pointer;">
+                <h3>🏆 Écriture Validée par l'Expert !</h3>
+                <p id="success-explanation" style="font-size:14px; line-height:1.65; margin:15px 0; color:#cfe8da;"></p>
+
+                <button onclick="genererLiasseFiscalePDF()" class="btn-secondary" style="background:var(--credit-blue); color:#08131f; width:100%; margin-bottom:12px; border:none; padding:14px; font-weight:700; border-radius:var(--radius-sm); box-shadow:0 6px 16px rgba(77,143,209,0.3); cursor:pointer;">
                     📥 Exporter la Liasse Fiscale Officielle (PDF)
                 </button>
-                
-                <button onclick="nextStep()" class="btn-main" style="background:var(--gradient-success); color:white; box-shadow:0 4px 15px rgba(16,185,129,0.3);">Étape Suivante ➡️</button>
+
+                <button onclick="nextStep()" class="btn-main" style="background:var(--gradient-emerald); color:#08150f; box-shadow:var(--shadow-emerald);">Étape Suivante ➡️</button>
             </div>
         </div>
     </div>
