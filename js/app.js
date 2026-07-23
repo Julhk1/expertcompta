@@ -5,7 +5,8 @@ let gameState = {
     step: 1,
     xp: 100,
     journal: [],
-    balances: {}
+    balances: {},
+    bonusAwardedStep: null
 };
 
 function resetBalances() {
@@ -18,9 +19,12 @@ function resetBalances() {
         "311": { debit: 0, credit: 0, label: "311 - Stock Matières Premières" },
         "355": { debit: 0, credit: 0, label: "355 - Stock de Produits Finis" },
         "401": { debit: 0, credit: 0, label: "401 - Fournisseurs" },
-        "411": { debit: 0, credit: 0, label: "411 - Clients / Personnel" },
+        "411": { debit: 0, credit: 0, label: "411 - Clients" },
         "416": { debit: 0, credit: 0, label: "416 - Clients Douteux" },
+        "421": { debit: 0, credit: 0, label: "421 - Personnel, Rémunérations Dues" },
         "431": { debit: 0, credit: 0, label: "431 - Organismes Sociaux (URSSAF)" },
+        "444": { debit: 0, credit: 0, label: "444 - État, Impôt sur les Bénéfices" },
+        "4441": { debit: 0, credit: 0, label: "4441 - État, Acomptes d'IS" },
         "44551": { debit: 0, credit: 0, label: "44551 - TVA à Décaisser" },
         "44566": { debit: 0, credit: 0, label: "44566 - TVA Déductible sur Biens" },
         "44571": { debit: 0, credit: 0, label: "44571 - TVA Collectée" },
@@ -42,16 +46,25 @@ function resetBalances() {
     };
 }
 
+// Comptes dont le solde normal se lit à l'Actif du bilan (le reste va au Passif par défaut)
+const ACTIF_ACCOUNTS = ["203", "215", "311", "355", "411", "416", "4441", "44566", "512"];
+
 function initGame() {
     resetBalances();
     const localSave = localStorage.getItem('ec_active_save');
     if (localSave) {
         try {
-            const parsed = JSON.parse(atob(localSave));
+            const parsed = JSON.parse(decodeURIComponent(escape(atob(localSave))));
             if (parsed && parsed.moduleType === currentModule) {
+                const freshBalances = gameState.balances;
                 gameState = parsed;
+                // Forward-compatibility: fill in any chart-of-accounts entries the old save didn't have yet
+                for (const code in freshBalances) {
+                    if (!gameState.balances[code]) gameState.balances[code] = freshBalances[code];
+                }
+                if (typeof gameState.bonusAwardedStep === 'undefined') gameState.bonusAwardedStep = null;
             }
-        } catch(e) { localStorage.removeItem('ec_active_save'); }
+        } catch (e) { localStorage.removeItem('ec_active_save'); }
     }
     renderUI();
 }
@@ -72,6 +85,8 @@ function renderUI() {
         document.getElementById('module-title').innerText = "Félicitations !";
         document.getElementById('step-title').innerText = "🏆 Niveau Validé !";
         document.getElementById('step-theory').innerHTML = `<p>Tu as validé avec succès l'ensemble du programme pratique de cette section.</p><br><button onclick="exitToMenu()" class="btn-main">Retourner au catalogue</button>`;
+        document.getElementById('exercise-instruction').innerText = "Session terminée — aucune écriture supplémentaire requise.";
+        document.getElementById('account-select').innerHTML = '';
         document.getElementById('xp-bar').style.width = "100%";
         renderFinancials();
         return;
@@ -79,30 +94,32 @@ function renderUI() {
 
     const totalStepsInModule = Object.keys(pool).length;
     document.getElementById('module-title').innerText = `Filière : ${currentModule.toUpperCase()} | Progression : Étape ${gameState.step}/${totalStepsInModule}`;
-    
+
     document.getElementById('step-title').innerText = stepData.title;
     document.getElementById('step-theory').innerHTML = stepData.theory;
-    document.getElementById('exercise-instruction').innerText = `${stepData.exercise.instruction}`;
+    document.getElementById('exercise-instruction').innerText = `🎯 ${stepData.exercise.instruction}`;
     document.getElementById('xp-display').innerText = gameState.xp;
-    document.getElementById('xp-bar').style.width = (gameState.step * (100 / totalStepsInModule)) + "%";
+    document.getElementById('xp-bar').style.width = ((gameState.step - 1) * (100 / totalStepsInModule)) + "%";
 
     const select = document.getElementById('account-select');
     select.innerHTML = '';
     stepData.exercise.accountsAllowed.forEach(code => {
-        if(gameState.balances[code]) select.innerHTML += `<option value="${code}">${gameState.balances[code].label}</option>`;
+        if (gameState.balances[code]) select.innerHTML += `<option value="${code}">${gameState.balances[code].label}</option>`;
     });
 
     const tbody = document.getElementById('journal-body');
     tbody.innerHTML = '';
     gameState.journal.forEach((item, index) => {
+        const label = (gameState.balances[item.account] && gameState.balances[item.account].label) || item.account;
         tbody.innerHTML += `<tr>
-            <td><strong>${item.account}</strong></td>
+            <td><strong>${item.account}</strong> <span style="color:var(--text-faint); font-size:11px;">${label.split(' - ')[1] || ''}</span></td>
             <td>${item.debit || '-'}</td>
             <td>${item.credit || '-'}</td>
-            <td><button onclick="removeLine(${index})" class="btn-danger">❌</button></td>
+            <td><button onclick="removeLine(${index})" class="btn-danger">✕</button></td>
         </tr>`;
     });
 
+    hideError();
     renderFinancials();
 }
 
@@ -132,7 +149,7 @@ function handleSaisie() {
         return;
     }
 
-    document.getElementById('error-message').style.display = 'none';
+    hideError();
     gameState.journal.push({ account, debit, credit });
     gameState.balances[account].debit += debit;
     gameState.balances[account].credit += credit;
@@ -146,7 +163,13 @@ function handleSaisie() {
 
 function showError(msg) {
     const box = document.getElementById('error-message');
-    box.style.display = 'block'; box.innerText = msg;
+    box.classList.add('visible');
+    box.innerText = msg;
+}
+
+function hideError() {
+    const box = document.getElementById('error-message');
+    box.classList.remove('visible');
 }
 
 function renderFinancials() {
@@ -172,7 +195,7 @@ function renderFinancials() {
             const solde = c - d;
             if (solde !== 0) { produitsList.innerHTML += `<div class="financial-line"><span>${label}</span><strong>${solde} €</strong></div>`; tProduits += solde; }
         } else {
-            if (["203", "215", "311", "355", "411", "416", "44566", "512"].includes(acc)) {
+            if (ACTIF_ACCOUNTS.includes(acc)) {
                 const soldeActif = d - c;
                 if (soldeActif !== 0) { actifList.innerHTML += `<div class="financial-line"><span>${label}</span><strong>${soldeActif} €</strong></div>`; tActif += soldeActif; }
             } else {
@@ -184,9 +207,9 @@ function renderFinancials() {
 
     const net = tProduits - tCharges;
     if (net > 0) {
-        passifList.innerHTML += `<div class="financial-line" style="color:var(--accent-green)"><span>120 - Bénéfice de l'exercice</span><strong>${net} €</strong></div>`; tPassif += net;
+        passifList.innerHTML += `<div class="financial-line" style="color:var(--emerald-bright)"><span>120 - Bénéfice de l'exercice</span><strong>${net} €</strong></div>`; tPassif += net;
     } else if (net < 0) {
-        passifList.innerHTML += `<div class="financial-line" style="color:var(--accent-red)"><span>129 - Perte de l'exercice</span><strong>${net} €</strong></div>`; tPassif += net;
+        passifList.innerHTML += `<div class="financial-line" style="color:var(--debit-red-bright)"><span>129 - Perte de l'exercice</span><strong>${net} €</strong></div>`; tPassif += net;
     }
 
     document.getElementById('total-actif').innerText = tActif;
@@ -204,8 +227,8 @@ function renderFinancials() {
     let valid = true;
     for (let acc in stepData.exercise.expectedEntries) {
         const target = stepData.exercise.expectedEntries[acc];
-        const match = gameState.journal.some(item => 
-            item.account === acc && 
+        const match = gameState.journal.some(item =>
+            item.account === acc &&
             (target.debit ? item.debit === target.debit : true) &&
             (target.credit ? item.credit === target.credit : true)
         );
@@ -217,6 +240,13 @@ function renderFinancials() {
     if (valid) {
         document.getElementById('success-panel').style.display = 'block';
         document.getElementById('success-explanation').innerHTML = stepData.explanation.success;
+
+        if (gameState.bonusAwardedStep !== gameState.step) {
+            gameState.xp = Math.min(100, gameState.xp + 15);
+            gameState.bonusAwardedStep = gameState.step;
+            document.getElementById('xp-display').innerText = gameState.xp;
+            autoSave();
+        }
     } else {
         document.getElementById('success-panel').style.display = 'none';
     }
@@ -225,19 +255,20 @@ function renderFinancials() {
 function genererLiasseFiscalePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    
-    doc.setFillColor(22, 30, 49); 
+
+    doc.setFillColor(15, 22, 19);
     doc.rect(0, 0, 210, 40, 'F');
-    
-    doc.setTextColor(255, 255, 255);
+
+    doc.setTextColor(232, 199, 102);
     doc.setFont("Helvetica", "bold");
     doc.setFontSize(22);
-    doc.text("EXPERTCOMPTA - LIASSE FISCALE", 15, 20);
-    
+    doc.text("EXPERTCOMPTA — LIASSE FISCALE", 15, 20);
+
+    doc.setTextColor(255, 255, 255);
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(10);
-    doc.text("Formulaire de synthèse pédagogique - Conforme aux normes du PCG", 15, 32);
-    
+    doc.text("Formulaire de synthèse pédagogique — Conforme aux normes du PCG", 15, 32);
+
     const totalActif = document.getElementById('total-actif').innerText + " €";
     const totalPassif = document.getElementById('total-passif').innerText + " €";
     const totalCharges = document.getElementById('total-charges').innerText + " €";
@@ -251,53 +282,53 @@ function genererLiasseFiscalePDF() {
     doc.text(`CURSUS : ${moduleName} - ÉTAPE ${gameState.step}`, 15, 55);
     doc.setFont("Helvetica", "normal");
     doc.text(`Date d'exportation : ${new Date().toLocaleDateString()}`, 130, 55);
-    
+
     doc.setFillColor(241, 245, 249);
     doc.rect(15, 65, 180, 8, 'F');
     doc.setFont("Helvetica", "bold");
     doc.text("⚖️ BILAN COMPTABLE SIMPLIFIÉ (Patrimoine)", 18, 71);
-    
+
     doc.setFont("Helvetica", "normal");
     doc.rect(15, 73, 180, 30);
-    doc.line(105, 73, 105, 103); 
-    
+    doc.line(105, 73, 105, 103);
+
     doc.text("TOTAL ACTIF (Emplois) :", 18, 85);
     doc.setFont("Helvetica", "bold");
     doc.text(totalActif, 70, 85);
-    
+
     doc.setFont("Helvetica", "normal");
     doc.text("TOTAL PASSIF (Ressources) :", 108, 85);
     doc.setFont("Helvetica", "bold");
     doc.text(totalPassif, 165, 85);
-    
+
     doc.setFillColor(241, 245, 249);
     doc.rect(15, 115, 180, 8, 'F');
     doc.setFont("Helvetica", "bold");
     doc.text("📊 COMPTE DE RÉSULTAT (Activité de la période)", 18, 121);
-    
+
     doc.setFont("Helvetica", "normal");
     doc.rect(15, 123, 180, 45);
     doc.line(15, 138, 195, 138);
     doc.line(15, 153, 195, 153);
-    
+
     doc.text("Total des Charges (Classe 6) :", 18, 132);
     doc.text(totalCharges, 150, 132);
-    
+
     doc.text("Total des Produits (Classe 7) :", 18, 147);
     doc.text(totalProduits, 150, 147);
-    
+
     doc.setFont("Helvetica", "bold");
-    doc.setTextColor(16, 185, 129); 
+    doc.setTextColor(31, 138, 95);
     doc.text("RÉSULTAT NET DE L'EXERCICE :", 18, 162);
     doc.text(resultatNet, 150, 162);
-    
+
     doc.rect(120, 185, 75, 30);
     doc.setTextColor(100, 116, 139);
     doc.setFontSize(9);
     doc.text("Visa de conformité", 123, 191);
     doc.setFont("Helvetica", "bold");
     doc.text("EXPERTCOMPTA ACCREDITED", 123, 205);
-    
+
     doc.setFontSize(8);
     doc.text("Ce document synthétique certifie la réussite et l'équilibre de la balance comptable de l'étudiant.", 15, 285);
 
@@ -313,7 +344,7 @@ function removeLine(index) {
 }
 
 function autoSave() {
-    localStorage.setItem('ec_active_save', btoa(JSON.stringify(gameState)));
+    localStorage.setItem('ec_active_save', btoa(unescape(encodeURIComponent(JSON.stringify(gameState)))));
 }
 
 function nextStep() {
