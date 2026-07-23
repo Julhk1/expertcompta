@@ -93,16 +93,6 @@ const academyScenarios = {
             },
             explanation: { success: "Écriture d'école validée. Le patrimoine s'enrichit d'une immobilisation au Débit du compte 215, financée par un décaissement au Crédit de la banque 512." }
         },
-        10: {
-            title: "L1 - Étape 10 : Synthèse - L'Édition du Bilan Final",
-            theory: "Une fois toutes les écritures saisies, le <strong>Grand Livre</strong> compile les totaux. La différence entre les Produits (classe 7) et les Charges (classe 6) dégage le <strong>Résultat Net</strong>. S'il est positif, c'est un Bénéfice, qui vient s'ajouter au Passif du Bilan pour l'équilibrer définitivement.",
-            exercise: {
-                instruction: "Toutes vos opérations de base sont saines. Passez une écriture technique de clôture à 0 € sur le compte Capital (101) pour valider officiellement votre diplôme de niveau Licence 1 !",
-                accountsAllowed: ["101"],
-                expectedEntries: { "101": { debit: 0 } }
-            },
-            explanation: { success: "Félicitations Major ! Tu viens de valider le Module 1 complet. Le moteur de jeu a débloqué l'accès au Module 2 dans ton catalogue !" }
-        }
     },
 
 
@@ -203,16 +193,6 @@ const academyScenarios = {
             },
             explanation: { success: "Dette fiscale éteinte ! Le compte 44551 revient à zéro et le flux financier est sorti proprement de ta trésorerie." }
         },
-        10: {
-            title: "L2 - Étape 10 : Passage de niveau - Validation du Module 2",
-            theory: "Toutes les opérations intermédiaires de gestion de flux courantes et d'ajustements d'inventaire de base sont maîtrisées. Vous possédez les compétences requises pour analyser les cycles d'exploitation standards d'une PME.",
-            exercise: {
-                instruction: "Pour valider officiellement votre passage en Licence 3, passez une écriture de validation neutre de 0 € au débit du compte Capital Social (101).",
-                accountsAllowed: ["101"],
-                expectedEntries: { "101": { debit: 0 } }
-            },
-            explanation: { success: "Félicitations Major ! Le Module 2 est validé. Le moteur a débloqué l'accès au Module 3 (Comptabilité Approfondie de niveau Master) !" }
-        }
     },
 
 
@@ -315,16 +295,6 @@ const academyScenarios = {
             },
             explanation: { success: "Parfait ! La dépréciation annuelle de ton actif immatériel est actée en charge." }
         },
-        10: {
-            title: "L3/M1 - Étape 10 : Passage de niveau - Validation du Module 3",
-            theory: "Vous avez validé les concepts de risques financiers, de retraitements de groupes consolidés et d'évaluation des actifs immatériels. Votre profil s'oriente désormais vers les compétences d'un cadre financier supérieur.",
-            exercise: {
-                instruction: "Pour valider ce module et débloquer les outils de fiscalité avancée, passez une écriture technique neutre de 0 € au débit du compte Capital Social (101).",
-                accountsAllowed: ["101"],
-                expectedEntries: { "101": { debit: 0 } }
-            },
-            explanation: { success: "Félicitations Major ! Le Module 3 est validé. Le moteur a débloqué l'accès au Module 4 (Fiscalité Avancée) !" }
-        }
     },
 
 
@@ -338,71 +308,71 @@ const academyScenarios = {
     mod4: {
         1: {
             title: "M2 - Étape 1 : Le Versement des Acomptes d'Impôt sur les Sociétés (IS)",
-            theory: "En France, l'Impôt sur les Sociétés (IS) ne se paie pas en une seule fois en fin d'année. Les entreprises réalisant des bénéfices doivent verser **4 acomptes** trimestriels au cours de l'exercice. Ces acomptes constituent une avance faite à l'État et s'enregistrent temporairement au Débit d'un compte de tiers d'État (assimilez-le ici au compte transitoire 411 par simplification) par le crédit de la Banque (512).",
+            theory: "En France, l'Impôt sur les Sociétés (IS) ne se paie pas en une seule fois en fin d'année. Les entreprises réalisant des bénéfices doivent verser **4 acomptes** trimestriels au cours de l'exercice. Ces acomptes constituent une avance faite à l'État et s'enregistrent au Débit du compte de tiers dédié <strong>4441 - État, Acomptes d'IS</strong> par le crédit de la Banque (512). On se garde bien d'utiliser le compte 411 (Clients), réservé exclusivement aux créances commerciales.",
             exercise: {
                 instruction: "Enregistrez le paiement par prélèvement bancaire du premier acompte d'IS de l'année pour un montant de 2 000 €.",
-                accountsAllowed: ["411", "512"],
-                expectedEntries: { "411": { debit: 2000 }, "512": { credit: 2000 } }
+                accountsAllowed: ["4441", "512"],
+                expectedEntries: { "4441": { debit: 2000 }, "512": { credit: 2000 } }
             },
-            explanation: { success: "Correct ! L'acompte est acté comme une créance transitoire sur l'État (Débit 411) financée par une sortie de trésorerie (Crédit 512)." }
+            explanation: { success: "Correct ! L'acompte est acté comme une créance d'avance sur l'État (Débit 4441) financée par une sortie de trésorerie (Crédit 512)." }
         },
         2: {
             title: "M2 - Étape 2 : Le Versement du Deuxième Acompte d'IS",
             theory: "Le cycle fiscal se poursuit au cours de l'été. L'entreprise doit honorer son deuxième acompte d'IS calculé sur la base des bénéfices historiques. Le mécanisme comptable reste rigoureusement identique.",
             exercise: {
                 instruction: "Passez l'écriture de règlement par banque du deuxième acompte d'IS obligatoire pour un montant de 2 000 €.",
-                accountsAllowed: ["411", "512"],
-                expectedEntries: { "411": { debit: 2000 }, "512": { credit: 2000 } }
+                accountsAllowed: ["4441", "512"],
+                expectedEntries: { "4441": { debit: 2000 }, "512": { credit: 2000 } }
             },
-            explanation: { success: "Validé. Vos avances d'impôt cumulées au débit du compte de tiers s'élèvent désormais à 4 000 €." }
+            explanation: { success: "Validé. Vos avances d'impôt cumulées au débit du compte 4441 s'élèvent désormais à 4 000 €." }
         },
         3: {
             title: "M2 - Étape 3 : Travaux de Fin d'Exercice - Liquidation de la Charge d'IS",
-            theory: "À la clôture de l'exercice comptable, le fiscaliste détermine le bénéfice fiscal réel et calcule l'impôt total définitif dû pour l'année. Cet impôt global constitue une charge obligatoire de l'exercice à enregistrer au Débit du compte <strong>695 - Impôts sur les bénéfices</strong> en contrepartie du compte de dette d'État au Crédit (compte 401 par simplification).",
+            theory: "À la clôture de l'exercice comptable, le fiscaliste détermine le bénéfice fiscal réel et calcule l'impôt total définitif dû pour l'année. Cet impôt global constitue une charge obligatoire de l'exercice à enregistrer au Débit du compte <strong>695 - Impôts sur les bénéfices</strong> en contrepartie du compte de dette fiscale au Crédit du compte <strong>444 - État, Impôt sur les Bénéfices</strong>.",
             exercise: {
                 instruction: "Le calcul final de l'impôt sur les sociétés pour l'année s'élève à un montant total de 7 000 €. Constatez cette charge fiscale annuelle.",
-                accountsAllowed: ["695", "401"],
-                expectedEntries: { "695": { debit: 7000 }, "401": { credit: 7000 } }
+                accountsAllowed: ["695", "444"],
+                expectedEntries: { "695": { debit: 7000 }, "444": { credit: 7000 } }
             },
-            explanation: { success: "Exact ! La charge totale d'IS est enregistrée (Débit 695), ce qui diminue le résultat net de l'entreprise, et la dette brute envers le fisc est posée (Crédit 401)." }
+            explanation: { success: "Exact ! La charge totale d'IS est enregistrée (Débit 695), ce qui diminue le résultat net de l'entreprise, et la dette brute envers le fisc est posée (Crédit 444)." }
         },
         4: {
             title: "M2 - Étape 4 : Régularisation du Solde d'IS (Imputation des Acomptes)",
-            theory: "Pour payer ce que l'on doit réellement à l'État, on doit imputer (déduire) les acomptes déjà versés au cours de l'année (4 000 € stockés au débit du 411). On solde le compte d'acomptes en le créditant, et on diminue la dette fiscale globale (compte 401) en la débitant du montant des acomptes.",
+            theory: "Pour payer ce que l'on doit réellement à l'État, on doit imputer (déduire) les acomptes déjà versés au cours de l'année (4 000 € stockés au débit du 4441). On solde le compte d'acomptes en le créditant, et on diminue la dette fiscale globale (compte 444) en la débitant du montant des acomptes.",
             exercise: {
-                instruction: "Imputez les 4 000 € d'acomptes versés en cours d'année sur votre dette fiscale globale (Débitez 401 pour 4000 et Créditez 411 pour 4000).",
-                accountsAllowed: ["401", "411"],
-                expectedEntries: { "401": { debit: 4000 }, "411": { credit: 4000 } }
+                instruction: "Imputez les 4 000 € d'acomptes versés en cours d'année sur votre dette fiscale globale (Débitez 444 pour 4000 et Créditez 4441 pour 4000).",
+                accountsAllowed: ["444", "4441"],
+                expectedEntries: { "444": { debit: 4000 }, "4441": { credit: 4000 } }
             },
-            explanation: { success: "Parfait ! Les acomptes transitoires sont soldés et la dette fiscale nette restante au passif (compte 401) n'est plus que de 3 000 € (7 000 € - 4 000 €)." }
+            explanation: { success: "Parfait ! Le compte d'acomptes 4441 est soldé et la dette fiscale nette restante au passif (compte 444) n'est plus que de 3 000 € (7 000 € - 4 000 €)." }
         },
         5: {
             title: "M2 - Étape 5 : Paiement du Solde d'IS au Trésor Public",
-            theory: "Au mois de mai de l'année suivante, l'entreprise transmet sa liasse fiscale et procède au paiement du solde de l'impôt. On éteint la dette restante en débitant le compte 401 par le crédit du compte de Banque (512).",
+            theory: "Au mois de mai de l'année suivante, l'entreprise transmet sa liasse fiscale et procède au paiement du solde de l'impôt. On éteint la dette restante en débitant le compte 444 par le crédit du compte de Banque (512).",
             exercise: {
                 instruction: "Réglez par virement bancaire le solde d'IS restant dû à l'administration fiscale pour un montant de 3 000 €.",
-                accountsAllowed: ["401", "512"],
-                expectedEntries: { "401": { debit: 3000 }, "512": { credit: 3000 } }
+                accountsAllowed: ["444", "512"],
+                expectedEntries: { "444": { debit: 3000 }, "512": { credit: 3000 } }
             },
             explanation: { success: "Dette d'IS totalement apurée ! Les flux fiscaux sur les bénéfices de cet exercice sont clos." }
         },
         6: {
             title: "M2 - Étape 6 : Optimisation Fiscale - Le Crédit d'Impôt Recherche (CIR)",
-            theory: "Pour encourager l'innovation, l'État accorde aux entreprises un **Crédit d'Impôt Recherche (CIR)**. Ce dispositif fiscal vient directement réduire le montant de l'impôt à payer. Comptablement, le CIR représente un produit (une subvention fiscale) qui vient diminuer la charge d'impôt globale : on crédite le compte 695 (ou un compte 74) et on débite une créance sur l'État (compte 411).",
+            theory: "Pour encourager l'innovation, l'État accorde aux entreprises un **Crédit d'Impôt Recherche (CIR)**. Ce dispositif fiscal vient directement réduire le montant de l'impôt à payer. Comptablement, le CIR représente une créance sur l'État qui vient diminuer la charge d'impôt globale : on crédite le compte 695 et on débite une créance sur l'État (compte 4441, utilisé ici comme compte d'imputation fiscale).",
             exercise: {
                 instruction: "L'administration valide votre dossier d'innovation et vous octroie un Crédit d'Impôt Recherche (CIR) d'un montant de 1 500 €. Enregistrez ce produit fiscal au crédit du compte 695.",
-                accountsAllowed: ["411", "695"],
-                expectedEntries: { "411": { debit: 1500 }, "695": { credit: 1500 } }
+                accountsAllowed: ["4441", "695"],
+                expectedEntries: { "4441": { debit: 1500 }, "695": { credit: 1500 } }
             },
-            explanation: { success: "Magnifique ! Le crédit du compte 695 réduit mathématiquement ta charge d'impôt nette de l'année, améliorant ton résultat, et la créance est enregistrée." }
+            explanation: { success: "Magnifique ! Le crédit du compte 695 réduit mathématiquement ta charge d'impôt nette de l'année, améliorant ton résultat, et la créance est enregistrée sur le compte 4441." }
         },
         7: {
             title: "M2 - Étape 7 : Régularisation annuelle de TVA - Le Crédit de TVA",
             theory: "Parfois, suite à de lourds investissements, une entreprise paie plus de TVA sur ses achats qu'elle n'en collecte sur ses ventes. Lors de la liquidation, le solde n'est pas une dette, mais un **Crédit de TVA** (une créance sur l'État). On solde la TVA collectée et déductible, et on enregistre ce droit au remboursement au Débit du compte de créance 44566 (ou 44567 par simplification, ici géré sur le 44566).",
             exercise: {
-                instruction: "Procédez à la liquidation de TVA : Soldez 2 000 € de TVA collectée (Débit 44571) et 3 500 € de TVA déductible (Crédit 44566) pour faire apparaître le Crédit de TVA de 1 500 € au Débit du compte 44566.",
+                instruction: "Procédez à la liquidation de TVA : le compte 44566 (TVA déductible) affiche un solde débiteur cumulé de 3 500 € et le compte 44571 (TVA collectée) un solde créditeur de 2 000 €. Soldez la TVA collectée (Débit 44571 pour 2 000 €) par le crédit de la TVA déductible à due concurrence (Crédit 44566 pour 2 000 €). Il restera alors un solde débiteur net de 1 500 € sur le compte 44566, qui matérialise le Crédit de TVA (créance sur l'État).",
                 accountsAllowed: ["44571", "44566"],
-                expectedEntries: { "44571": { debit: 2000 }, "44566": { credit: 500 } } // (3500 CR - 2000 DB = solde débiteur net de 1500 restant à l'actif)
+                expectedEntries: { "44571": { debit: 2000 }, "44566": { credit: 2000 } }
             },
             explanation: { success: "Excellent ! Le compte de TVA déductible conserve un solde débiteur net de 1 500 €, matérialisant la créance de remboursement que l'État te doit." }
         },
@@ -426,16 +396,6 @@ const academyScenarios = {
             },
             explanation: { success: "Validé. La charge d'exploitation locale est actée au débit et les fonds sont décaissés." }
         },
-        10: {
-            title: "M2 - Étape 10 : Passage de niveau - Validation du Module 4",
-            theory: "La gestion des cycles fiscaux complexes (acomptes, solde d'IS, crédits d'impôt incitatifs et arbitrages de TVA) n'a plus de secret pour vous. Vous maîtrisez le calendrier et les obligations fiscales majeures.",
-            exercise: {
-                instruction: "Pour valider officiellement votre diplôme de fiscaliste de niveau Master 2, passez une écriture technique neutre de 0 € sur le compte Capital (101).",
-                accountsAllowed: ["101"],
-                expectedEntries: { "101": { debit: 0 } }
-            },
-            explanation: { success: "Félicitations Major ! Le Module 4 est validé à 100 %. Le moteur a débloqué l'accès au Module 5 (Gestion Sociale & RH) !" }
-        }
     },
 
 
@@ -448,23 +408,23 @@ const academyScenarios = {
     mod5: {
         1: {
             title: "M2 - Étape 1 : Centralisation du Salaire Brut",
-            theory: "Le bulletin de paie se comptabilise en plusieurs flux. Le premier flux est le **Salaire Brut**, qui représente l'obligation contractuelle brute totale de l'employeur avant toute retenue. C'est une charge d'exploitation pure à inscrire au Débit du compte <strong>641 - Salaires du Personnel</strong>. En contrepartie, on valide l'engagement de payer l'équipe au Crédit du compte de tiers <strong>411 - Personnel</strong> (Salaire Net par simplification transitoire).",
+            theory: "Le bulletin de paie se comptabilise en plusieurs flux. Le premier flux est le **Salaire Brut**, qui représente l'obligation contractuelle brute totale de l'employeur avant toute retenue. C'est une charge d'exploitation pure à inscrire au Débit du compte <strong>641 - Salaires du Personnel</strong>. En contrepartie, on valide l'engagement de payer l'équipe au Crédit du compte de tiers <strong>421 - Personnel, Rémunérations dues</strong>.",
             exercise: {
-                instruction: "Passez l'écriture de centralisation de la paie du mois pour un montant total de salaires bruts de 5 000 €. Pour le moment, affectez la totalité en contrepartie du compte Personnel (411).",
-                accountsAllowed: ["641", "411"],
-                expectedEntries: { "641": { debit: 5000 }, "411": { credit: 5000 } }
+                instruction: "Passez l'écriture de centralisation de la paie du mois pour un montant total de salaires bruts de 5 000 €. Pour le moment, affectez la totalité en contrepartie du compte Personnel (421).",
+                accountsAllowed: ["641", "421"],
+                expectedEntries: { "641": { debit: 5000 }, "421": { credit: 5000 } }
             },
-            explanation: { success: "Parfait ! Le coût brut est acté en charge (Débit 641) et la dette envers le personnel est posée au passif (Crédit 411)." }
+            explanation: { success: "Parfait ! Le coût brut est acté en charge (Débit 641) et la dette envers le personnel est posée au passif (Crédit 421)." }
         },
         2: {
             title: "M2 - Étape 2 : Retenue à la source des Charges Salariales",
-            theory: "Le salarié ne touche pas le salaire brut. L'entreprise doit prélever (retenir à la source) les **charges salariales** (retraite, prévoyance...) pour les reverser plus tard aux organismes sociaux. Cette retenue vient **diminuer** ce que l'on doit au salarié (on Débite le 411) et crée une dette envers la sécurité sociale au Crédit du compte <strong>431 - Organismes Sociaux (URSSAF)</strong>.",
+            theory: "Le salarié ne touche pas le salaire brut. L'entreprise doit prélever (retenir à la source) les **charges salariales** (retraite, prévoyance...) pour les reverser plus tard aux organismes sociaux. Cette retenue vient **diminuer** ce que l'on doit au salarié (on Débite le 421) et crée une dette envers la sécurité sociale au Crédit du compte <strong>431 - Organismes Sociaux (URSSAF)</strong>.",
             exercise: {
-                instruction: "Sur la paie précédente, prélevez 1 100 € de charges salariales sur le compte du personnel (411) pour les transférer sur le compte de l'URSSAF (431).",
-                accountsAllowed: ["411", "431"],
-                expectedEntries: { "411": { debit: 1100 }, "431": { credit: 1100 } }
+                instruction: "Sur la paie précédente, prélevez 1 100 € de charges salariales sur le compte du personnel (421) pour les transférer sur le compte de l'URSSAF (431).",
+                accountsAllowed: ["421", "431"],
+                expectedEntries: { "421": { debit: 1100 }, "431": { credit: 1100 } }
             },
-            explanation: { success: "Excellent ! La dette envers le salarié (411) baisse à 3 900 € (ce qui correspond à son salaire net avant impôt) et ta dette URSSAF (431) augmente au Crédit." }
+            explanation: { success: "Excellent ! La dette envers le salarié (421) baisse à 3 900 € (ce qui correspond à son salaire net avant impôt) et ta dette URSSAF (431) augmente au Crédit." }
         },
         3: {
             title: "M2 - Étape 3 : Intégration des Cotisations Patronales",
@@ -488,23 +448,23 @@ const academyScenarios = {
         },
         5: {
             title: "M2 - Étape 5 : Provision pour Congés Payés (Ajustement d'Inventaire)",
-            theory: "À la fin de l'année, les salariés ont acquis des jours de vacances qu'ils n'ont pas encore pris. Selon le principe de rattachement des charges, l'entreprise doit provisionner le coût futur de ces vacances. On enregistre cette charge estimée au Débit du compte 641 (sous-compte indemnités) et on crée une dette provisionnée au passif sur le compte 411.",
+            theory: "À la fin de l'année, les salariés ont acquis des jours de vacances qu'ils n'ont pas encore pris. Selon le principe de rattachement des charges, l'entreprise doit provisionner le coût futur de ces vacances. On enregistre cette charge estimée au Débit du compte 641 (sous-compte indemnités) et on crée une dette provisionnée au passif sur le compte 421.",
             exercise: {
                 instruction: "En fin d'exercice, le calcul des Congés Payés à payer (CP) s'élève à 1 500 €. Enregistrez cette provision sociale.",
-                accountsAllowed: ["641", "411"],
-                expectedEntries: { "641": { debit: 1500 }, "411": { credit: 1500 } }
+                accountsAllowed: ["641", "421"],
+                expectedEntries: { "641": { debit: 1500 }, "421": { credit: 1500 } }
             },
             explanation: { success: "Correct ! La charge est bien provisionnée sur l'exercice en cours, respectant l'image fidèle des comptes." }
         },
         6: {
             title: "M2 - Étape 6 : Le Règlement des Salaires par Virement (Le Net)",
-            theory: "Au début du mois suivant, l'entreprise exécute l'ordre de virement bancaire pour payer les employés. Pour éteindre la dette transitoire de rémunération nette qui dort au passif (compte 411), on va donc la débiter, et constater le décaissement au Crédit de la Banque (512).",
+            theory: "Au début du mois suivant, l'entreprise exécute l'ordre de virement bancaire pour payer les employés. Pour éteindre la dette transitoire de rémunération nette qui dort au passif (compte 421), on va donc la débiter, et constater le décaissement au Crédit de la Banque (512).",
             exercise: {
-                instruction: "Procédez au paiement par virement du salaire net de vos collaborateurs pour un montant global de 3 900 € (Débit 411 et Crédit 512).",
-                accountsAllowed: ["411", "512"],
-                expectedEntries: { "411": { debit: 3900 }, "512": { credit: 3900 } }
+                instruction: "Procédez au paiement par virement du salaire net de vos collaborateurs pour un montant global de 3 900 € (Débit 421 et Crédit 512).",
+                accountsAllowed: ["421", "512"],
+                expectedEntries: { "421": { debit: 3900 }, "512": { credit: 3900 } }
             },
-            explanation: { success: "Trésorerie décaissée ! Vos salariés ont reçu leur virement. Le compte 411 est apuré de son flux courant." }
+            explanation: { success: "Trésorerie décaissée ! Vos salariés ont reçu leur virement. Le compte 421 est apuré de son flux courant." }
         },
         7: {
             title: "M2 - Étape 7 : Télérèglement des Charges Sociales via la DSN",
@@ -518,11 +478,11 @@ const academyScenarios = {
         },
         8: {
             title: "M2 - Étape 8 : Social Avancé - L'Indemnité de Rupture Conventionnelle",
-            theory: "Lorsqu'un salarié quitte l'entreprise dans le cadre d'une rupture amiable (rupture conventionnelle), il perçoit une indemnité de départ. Pour l'entreprise, cette indemnité exceptionnelle constitue une charge de personnel spécifique à enregistrer au Débit du compte <strong>641 - Salaires du Personnel</strong> (et génère une dette transitoire sur le 411).",
+            theory: "Lorsqu'un salarié quitte l'entreprise dans le cadre d'une rupture amiable (rupture conventionnelle), il perçoit une indemnité de départ. Pour l'entreprise, cette indemnité exceptionnelle constitue une charge de personnel spécifique à enregistrer au Débit du compte <strong>641 - Salaires du Personnel</strong> (et génère une dette transitoire sur le 421).",
             exercise: {
-                instruction: "Un cadre supérieur quitte la structure. Comptabilisez son indemnité légale de rupture d'un montant de 5 000 € (affectez la charge sur le 641 et le passif sur le 411).",
-                accountsAllowed: ["641", "411"],
-                expectedEntries: { "641": { debit: 5000 }, "411": { credit: 5000 } }
+                instruction: "Un cadre supérieur quitte la structure. Comptabilisez son indemnité légale de rupture d'un montant de 5 000 € (affectez la charge sur le 641 et le passif sur le 421).",
+                accountsAllowed: ["641", "421"],
+                expectedEntries: { "641": { debit: 5000 }, "421": { credit: 5000 } }
             },
             explanation: { success: "Validé. La charge de licenciement/rupture est actée et impactera le résultat opérationnel." }
         },
@@ -531,21 +491,11 @@ const academyScenarios = {
             theory: "Le jour de son départ, le salarié reçoit son reçu pour solde de tout compte comprenant son indemnité et ses reliquats. L'écriture d'extinction de la dette sociale reste classique : débit du compte de tiers par le crédit financier.",
             exercise: {
                 instruction: "Signez et enregistrez le paiement par banque du chèque de solde de tout compte du salarié pour un montant de 5 000 €.",
-                accountsAllowed: ["411", "512"],
-                expectedEntries: { "411": { debit: 5000 }, "512": { credit: 5000 } }
+                accountsAllowed: ["421", "512"],
+                expectedEntries: { "421": { debit: 5000 }, "512": { credit: 5000 } }
             },
             explanation: { success: "Le collaborateur est payé, la dette sociale de rupture est effacée." }
         },
-        10: {
-            title: "M2 - Étape 10 : Diplôme d'Expert - Clôture de l'Académie",
-            theory: "Exceptionnel ! Tu as franchi toutes les étapes de ce cursus d'élite. Des fondations théoriques du bilan jusqu'aux arcanes fiscales standards et de gestion des flux de paie de niveau Master 2, tu possèdes les clés de l'expertise.",
-            exercise: {
-                instruction: "Pour valider définitivement ton diplôme et graver ton nom au tableau d'honneur des Experts-Comptables, passez une ligne finale à 0 € sur le compte Capital (101).",
-                accountsAllowed: ["101"],
-                expectedEntries: { "101": { debit: 0 } }
-            },
-            explanation: { success: "🏆 CHAMPION ! Tu as officiellement terminé le cursus ExpertCompta avec mention Très Bien. Tu es armé pour affronter n'importe quel bilan !" }
-        }
     },
 
 
@@ -618,13 +568,13 @@ const academyScenarios = {
         },
         7: {
             title: "Mois 12 : Salaire de l'apprenti boulanger",
-            theory: "Il est temps de rémunérer votre jeune apprenti. On constate d'abord la charge brute pour l'entreprise en face de la dette nette envers le salarié.",
+            theory: "Il est temps de rémunérer votre jeune apprenti. On constate la charge brute pour l'entreprise (641), on retient à la source ses cotisations salariales dues à l'URSSAF (431), et le solde net à payer reste une dette envers le salarié (compte 421 - Personnel, jamais le 411 réservé aux clients).",
             exercise: {
-                instruction: "Comptabilisez le salaire brut de l'apprenti pour un montant de 2 000 € (Débit 641) en face du salaire net à payer de 1 600 € (Crédit 411).",
-                accountsAllowed: ["641", "411"],
-                expectedEntries: { "641": { debit: 2000 }, "411": { credit: 1600 } }
+                instruction: "Comptabilisez le salaire brut de l'apprenti pour un montant de 2 000 € (Débit 641). En contrepartie, retenez 400 € de cotisations salariales (Crédit 431) et laissez apparaître le salaire net à payer de 1 600 € (Crédit 421).",
+                accountsAllowed: ["641", "421", "431"],
+                expectedEntries: { "641": { debit: 2000 }, "421": { credit: 1600 }, "431": { credit: 400 } }
             },
-            explanation: { success: "Salaire brut et net tracé. Passons aux charges sociales." }
+            explanation: { success: "Salaire brut, retenue salariale et net à payer parfaitement tracés et équilibrés (2 000 € = 1 600 € + 400 €). Passons aux charges patronales." }
         },
         8: {
             title: "Mois 12 : Cotisations URSSAF patronales",
@@ -640,11 +590,11 @@ const academyScenarios = {
             title: "Mois 12 : Virement bancaire de l'apprenti",
             theory: "Le mois se termine, vous versez son salaire net à l'apprenti pour éteindre votre dette de personnel.",
             exercise: {
-                instruction: "Soldez le compte du personnel (411) en payant les 1 600 € de salaire net par virement bancaire.",
-                accountsAllowed: ["411", "512"],
-                expectedEntries: { "411": { debit: 1600 }, "512": { credit: 1600 } }
+                instruction: "Soldez le compte du personnel (421) en payant les 1 600 € de salaire net par virement bancaire.",
+                accountsAllowed: ["421", "512"],
+                expectedEntries: { "421": { debit: 1600 }, "512": { credit: 1600 } }
             },
-            explanation: { success: "Le virement est parti, l'apprenti est payé, le compte 411 est apuré." }
+            explanation: { success: "Le virement est parti, l'apprenti est payé, le compte 421 est apuré." }
         },
         10: {
             title: "Inventaire : Amortissement annuel du four",
@@ -696,16 +646,6 @@ const academyScenarios = {
             },
             explanation: { success: "Impôt acté au débit et dette fiscale posée au passif." }
         },
-        15: {
-            title: "Clôture : Validation définitive des comptes",
-            theory: "Le cycle comptable complet de votre boulangerie est achevé de l'ouverture jusqu'à l'inventaire !",
-            exercise: {
-                instruction: "Validez l'exercice en effectuant une ligne de validation neutre de 0 € au débit du compte Capital Social (101).",
-                accountsAllowed: ["101"],
-                expectedEntries: { "101": { debit: 0 } }
-            },
-            explanation: { success: "🏆 Bravo Artisan ! Tu as géré ta boulangerie comme un véritable directeur financier d'élite !" }
-        }
     },
 
     // ==========================================
@@ -822,16 +762,6 @@ const academyScenarios = {
             },
             explanation: { success: "IS comptabilisé à l'inventaire." }
         },
-        12: {
-            title: "Clôture : Clôture du grand livre Tech",
-            theory: "Votre exercice de comptabilité approfondie d'une entité SaaS est un succès !",
-            exercise: {
-                instruction: "Passez une ligne technique de validation à 0 € au débit du compte 101 pour clore la simulation.",
-                accountsAllowed: ["101"],
-                expectedEntries: { "101": { debit: 0 } }
-            },
-            explanation: { success: "🏆 Félicitations CEO ! Tu as piloté la compta de ton SaaS avec la rigueur d'un grand Directeur Financier (CFO) !" }
-        }
     },
 
     // ==========================================
@@ -890,13 +820,13 @@ const academyScenarios = {
         },
         6: {
             title: "Mois 12 : Centralisation de la paie des ouvriers",
-            theory: "Enregistrement mensuel de la masse salariale brute des équipes de production de l'usine.",
+            theory: "Enregistrement mensuel de la masse salariale brute des équipes de production de l'usine. Le salaire brut (641) se décompose entre le net à payer au personnel (compte 421, jamais le 411 réservé aux clients) et les cotisations salariales retenues à la source pour l'URSSAF (431).",
             exercise: {
-                instruction: "Enregistrez les salaires bruts des ateliers pour 20 000 € au débit du 641 face à la dette nette de personnel de 16 000 € (411).",
-                accountsAllowed: ["641", "411"],
-                expectedEntries: { "641": { debit: 20000 }, "411": { credit: 16000 } }
+                instruction: "Enregistrez les salaires bruts des ateliers pour 20 000 € au débit du 641, avec 16 000 € de net à payer au personnel (Crédit 421) et 4 000 € de cotisations salariales retenues (Crédit 431).",
+                accountsAllowed: ["641", "421", "431"],
+                expectedEntries: { "641": { debit: 20000 }, "421": { credit: 16000 }, "431": { credit: 4000 } }
             },
-            explanation: { success: "Salaire brut d'usine enregistré." }
+            explanation: { success: "Salaire brut d'usine enregistré et parfaitement équilibré (20 000 € = 16 000 € + 4 000 €)." }
         },
         7: {
             title: "Mois 12 : Cotisations sociales URSSAF de l'usine",
@@ -948,15 +878,5 @@ const academyScenarios = {
             },
             explanation: { success: "Sublime ! Le double flux de stock (Matières et Produits Finis) est parfaitement tracé au bilan d'inventaire." }
         },
-        12: {
-            title: "Clôture : Clôture du pôle industriel",
-            theory: "Le grand livre annuel du groupe industriel consolidé est d'équerre.",
-            exercise: {
-                instruction: "Clôturez officiellement la simulation industrielle en passant une ligne neutre à 0 € sur le compte 101.",
-                accountsAllowed: ["101"],
-                expectedEntries: { "101": { debit: 0 } }
-            },
-            explanation: { success: "🏆 Félicitations Directeur ! Tu as piloté la complexité d'un groupe industriel lourd avec maestria !" }
-        }
     }
 };
